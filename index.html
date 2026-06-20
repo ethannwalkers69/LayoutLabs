@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>🏰 Clash of Clans - Base Layouts Pro</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/W3eRTmX.png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/W3eRTmX.png">
+    <link rel="shortcut icon" type="image/png" href="https://i.imgur.com/W3eRTmX.png">
+    
+    <!-- Meta Tags for Better Display -->
+    <meta name="theme-color" content="#0f0e17">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        coc: {
+                            dark: '#0f0e17',
+                            darker: '#1a1a2e',
+                            gold: '#ffd700',
+                            light: '#e94560',
+                            purple: '#7c3aed',
+                            cyan: '#06b6d4',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(255, 215, 0, 0.3)' },
+                            '50%': { boxShadow: '0 0 40px rgba(255, 215, 0, 0.6)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: #0f0e17;
+            font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+            overflow-x: hidden;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .glass-hover:active {
+            transform: scale(0.97);
+        }
+        @media (hover: hover) {
+            .glass-hover:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 215, 0, 0.3);
+            }
+        }
+        
+        /* Updated gradient-text to only affect background, but we'll use inline spans for explicit colors */
+        .gradient-text {
+            background: linear-gradient(135deg, #ffd700 0%, #ff6b6b 50%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .townhall-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (min-width: 480px) {
+            .townhall-grid { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        }
+        @media (min-width: 768px) {
+            .townhall-grid { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        }
+        @media (min-width: 1024px) {
+            .townhall-grid { grid-template-columns: repeat(5, 1fr); gap: 1.75rem; }
+        }
+        
+        .base-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 480px) {
+            .base-grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+        }
+        @media (min-width: 768px) {
+            .base-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        }
+        @media (min-width: 1024px) {
+            .base-grid { grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 14, 23, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.5rem 0 env(safe-area-inset-bottom);
+            display: none;
+            z-index: 50;
+        }
+        @media (max-width: 768px) {
+            .bottom-nav { display: flex; }
+            .main-content { padding-bottom: 80px; }
+        }
+        
+        .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 6px 0;
+            color: #6b7280;
+            transition: color 0.3s;
+            font-size: 10px;
+            touch-action: manipulation;
+            cursor: pointer;
+        }
+        .bottom-nav-item.active { color: #ffd700; }
+        .bottom-nav-item i { font-size: 20px; }
+        .bottom-nav-item:active { transform: scale(0.9); }
+        
+        .filter-chips {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.25rem 0.5rem;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .filter-chips::-webkit-scrollbar { display: none; }
+        .filter-chip {
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #9ca3af;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            transition: all 0.3s;
+            touch-action: manipulation;
+            min-height: 36px;
+            cursor: pointer;
+        }
+        .filter-chip.active {
+            background: #ffd700;
+            color: #0f0e17;
+        }
+        .filter-chip:active { transform: scale(0.95); }
+        
+        .toast {
+            position: fixed;
+            bottom: 5rem;
+            left: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            animation: slideUp 0.4s ease-out;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .toast { bottom: 2rem; right: 2rem; left: auto; }
+        }
+        
+        .touch-btn {
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
+            cursor: pointer;
+        }
+        .touch-btn:active { transform: scale(0.95); }
+        
+        .stat-card:active { transform: scale(0.97); }
+        .favorite-btn { transition: all 0.3s ease; }
+        .favorite-btn.active { color: #ffd700; }
+        .favorite-btn:active { transform: scale(1.3); }
+        
+        .card-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .card-shine::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        @media (hover: hover) {
+            .card-shine:hover::before { opacity: 1; }
+        }
+        .card-shine:active::before { opacity: 0.5; }
+        
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        /* custom title colors */
+        .title-white { color: white; }
+        .title-green { color: #4ade80; } /* bright green */
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-20 left-4 right-4 md:bottom-8 md:right-8 md:left-auto z-50 pointer-events-none">
+        <div class="pointer-events-auto mx-auto max-w-md"></div>
+    </div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button onclick="renderHomePage()" class="bottom-nav-item active" data-nav="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button onclick="scrollToSearch()" class="bottom-nav-item" data-nav="search">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </button>
+        <button onclick="showFavorites()" class="bottom-nav-item" data-nav="favorites">
+            <i class="fas fa-star"></i>
+            <span>Favorites</span>
+            <span id="favCount" class="absolute -top-1 right-1/4 bg-coc-gold text-coc-dark text-[8px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+        </button>
+        <button onclick="showStats()" class="bottom-nav-item" data-nav="stats">
+            <i class="fas fa-chart-bar"></i>
+            <span>Stats</span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="app" class="container mx-auto px-3 sm:px-4 py-4 md:py-8 max-w-7xl main-content">
+        <!-- Content will be dynamically rendered here -->
+    </div>
+
+    <script src="base.js"></script>
+    <script>
+        // ========================================
+        // MAIN APPLICATION
+        // ========================================
+        const app = document.getElementById('app');
+        const toastContainer = document.getElementById('toastContainer');
+        let favorites = JSON.parse(localStorage.getItem('coc_favorites') || '[]');
+        let searchQuery = '';
+        let currentFilter = 'all';
+
+        // Check URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const baseId = urlParams.get('id');
+
+        if (baseId) {
+            renderBaseDetails(parseInt(baseId));
+        } else {
+            renderHomePage();
+        }
+
+        // Update favorite count
+        function updateFavCount() {
+            const countEl = document.getElementById('favCount');
+            if (countEl) {
+                countEl.textContent = favorites.length;
+                countEl.style.display = favorites.length > 0 ? 'flex' : 'none';
+            }
+        }
+        updateFavCount();
+
+        // ========================================
+        // TOAST SYSTEM
+        // ========================================
+        function showToast(message, type = 'success') {
+            const colors = {
+                success: 'bg-green-500/95',
+                error: 'bg-red-500/95',
+                info: 'bg-blue-500/95',
+                warning: 'bg-yellow-500/95'
+            };
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${colors[type]} backdrop-blur-sm text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform transition-all duration-400 text-sm md:text-base`;
+            toast.innerHTML = `
+                <i class="fas ${icons[type]} text-lg md:text-xl flex-shrink-0"></i>
+                <span class="font-medium flex-1">${message}</span>
+                <button onclick="this.parentElement.remove()" class="flex-shrink-0 w-8 h-8 flex items-center justify-center hover:rotate-90 transition-transform">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
+            `;
+            
+            toastContainer.querySelector('.pointer-events-auto').appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // ========================================
+        // FAVORITES SYSTEM
+        // ========================================
+        function toggleFavorite(baseId) {
+            const index = favorites.indexOf(baseId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast('Removed from favorites', 'warning');
+            } else {
+                favorites.push(baseId);
+                showToast('Added to favorites! ⭐', 'success');
+            }
+            localStorage.setItem('coc_favorites', JSON.stringify(favorites));
+            updateFavCount();
+            
+            const currentBaseId = new URLSearchParams(window.location.search).get('id');
+            if (currentBaseId) {
+                renderBaseDetails(parseInt(currentBaseId));
+            } else {
+                const th = document.querySelector('[data-townhall]')?.dataset?.townhall;
+                if (th) {
+                    navigateToTownHall(parseInt(th));
+                } else {
+                    renderHomePage();
+                }
+            }
+        }
+
+        function isFavorite(baseId) {
+            return favorites.includes(baseId);
+        }
+
+        // ========================================
+        // STATS
+        // ========================================
+        function getStats() {
+            const totalBases = bases.length;
+            const uniqueTH = new Set(bases.map(b => b.th)).size;
+            const mostPopularTH = Object.entries(
+                bases.reduce((acc, b) => {
+                    acc[b.th] = (acc[b.th] || 0) + 1;
+                    return acc;
+                }, {})
+            ).sort((a, b) => b[1] - a[1])[0];
+            
+            return { totalBases, uniqueTH, mostPopularTH, favoritesCount: favorites.length };
+        }
+
+        // ========================================
+        // RENDER HOME PAGE
+        // ========================================
+        function renderHomePage() {
+            const stats = getStats();
+            const townhalls = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+            const availableTH = townhalls.filter(th => getBaseCountForTownHall(th) > 0);
+            
+            document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector('[data-nav="home"]')?.classList.add('active');
+            
+            app.innerHTML = `
+                <div class="text-center mb-6 md:mb-12 animate-slide-up">
+                    <div class="flex items-center justify-center gap-3 md:gap-4 mb-3 md:mb-4">
+                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-coc-gold to-yellow-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-2xl animate-float">
+                            <i class="fas fa-crown text-2xl md:text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight">
+                        <span class="title-white">LAYOUT</span><span class="title-green">LABS</span>
+                    </h1>
+                    <p class="text-sm md:text-xl text-gray-400 mb-2">Base Layout Collection</p>
+                    <div class="w-20 md:w-32 h-1 bg-gradient-to-r from-coc-gold via-coc-purple to-coc-cyan mx-auto mt-3 md:mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6 md:mb-12">
+                    <div class="glass rounded-xl md:rounded-2xl p-3 md:p-6 text-center stat-card">
+                        <div class="text-lg md:text-4xl font-bold text-coc-gold">${stats.totalBases}</div>
+                        <p class="text-[10px] md:text-sm text-gray-400">Total</p>
+                    </div>
+                    <div class="glass rounded-xl md:rounded-2xl p-3 md:p-6 text-center stat-card">
+                        <div class="text-lg md:text-4xl font-bold text-coc-purple">${stats.mostPopularTH ? stats.mostPopularTH[0] : 'N/A'}</div>
+                        <p class="text-[10px] md:text-sm text-gray-400">Popular TH</p>
+                    </div>
+                    <div class="glass rounded-xl md:rounded-2xl p-3 md:p-6 text-center stat-card">
+                        <div class="text-lg md:text-4xl font-bold text-coc-cyan">${stats.favoritesCount}</div>
+                        <p class="text-[10px] md:text-sm text-gray-400">Favorites</p>
+                    </div>
+                </div>
+
+                <div class="glass rounded-2xl p-3 md:p-6 mb-6 md:mb-12" id="searchSection">
+                    <div class="flex flex-col gap-3">
+                        <div class="relative w-full">
+                            <i class="fas fa-search absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm md:text-base"></i>
+                            <input type="text" 
+                                   id="searchInput"
+                                   placeholder="Search bases..." 
+                                   class="w-full bg-white/5 border border-white/10 rounded-xl pl-10 md:pl-12 pr-10 py-3 md:py-4 text-white placeholder-gray-400 focus:outline-none focus:border-coc-gold transition-all text-sm md:text-base"
+                                   oninput="handleSearch(this.value)"
+                                   inputmode="search">
+                            <button onclick="clearSearch()" id="clearSearchBtn" class="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white hidden touch-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="filter-chips">
+                            <button onclick="filterBases('all')" data-filter="all" class="filter-chip active">
+                                <i class="fas fa-th-list mr-1"></i> All
+                            </button>
+                            <button onclick="filterBases('war')" data-filter="war" class="filter-chip">
+                                <i class="fas fa-sword mr-1"></i> War
+                            </button>
+                            <button onclick="filterBases('farming')" data-filter="farming" class="filter-chip">
+                                <i class="fas fa-seedling mr-1"></i> Farm
+                            </button>
+                            <button onclick="filterBases('trophy')" data-filter="trophy" class="filter-chip">
+                                <i class="fas fa-trophy mr-1"></i> Trophy
+                            </button>
+                            <button onclick="filterBases('hybrid')" data-filter="hybrid" class="filter-chip">
+                                <i class="fas fa-balance-scale mr-1"></i> Hybrid
+                            </button>
+                            <button onclick="filterBases('legend')" data-filter="legend" class="filter-chip">
+                                <i class="fas fa-crown mr-1"></i> Legend
+                            </button>
+                            <button onclick="filterBases('defense')" data-filter="defense" class="filter-chip">
+                                <i class="fas fa-shield-alt mr-1"></i> Defense
+                            </button>
+                            <button onclick="showFavorites()" data-filter="favorites" class="filter-chip">
+                                <i class="fas fa-star mr-1 text-coc-gold"></i> ★ Favorites
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="townhall-grid">
+                    ${availableTH.map(th => `
+                        <div onclick="navigateToTownHall(${th})" 
+                             class="glass glass-hover rounded-xl md:rounded-2xl p-3 md:p-6 cursor-pointer transition-all duration-300 active:scale-95 group card-shine">
+                            <div class="relative">
+                                <div class="w-full aspect-square flex items-center justify-center mb-2 md:mb-4 relative">
+                                    <img src="base/townhall-${th}.png" 
+                                         alt="TH ${th}"
+                                         class="w-full h-full object-contain transition-all duration-500"
+                                         loading="lazy"
+                                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%23444%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2224%22>TH${th}</text></svg>'">
+                                    ${getBaseCountForTownHall(th) > 5 ? '<div class="absolute -top-1 -right-1 bg-coc-gold text-coc-dark text-[8px] md:text-xs font-bold px-1.5 py-0.5 rounded-full animate-pulse">🔥</div>' : ''}
+                                </div>
+                                <h3 class="text-sm md:text-2xl font-bold text-white text-center group-hover:text-coc-gold transition-colors">
+                                    TH ${th}
+                                </h3>
+                                <p class="text-[10px] md:text-sm text-gray-400 text-center mt-1 md:mt-2">
+                                    <i class="fas fa-chess-queen mr-1"></i>
+                                    ${getBaseCountForTownHall(th)} bases
+                                </p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="mt-8 md:mt-16 text-center text-gray-500 text-xs md:text-sm border-t border-white/5 pt-6 md:pt-8">
+                    <p class="flex flex-wrap items-center justify-center gap-2">
+                        <i class="fas fa-shield-alt text-coc-gold"></i>
+                        ${bases.length} base layouts
+                        <span class="hidden sm:inline">•</span>
+                        <span class="block sm:inline">Updated regularly</span>
+                        <i class="fas fa-shield-alt text-coc-gold"></i>
+                    </p>
+                    <div class="mt-2 flex flex-wrap items-center justify-center gap-2 md:gap-4 text-[10px] md:text-sm">
+                        <span class="flex items-center gap-1"><i class="fas fa-mobile-alt text-coc-gold"></i> Copy Base Layout</span>
+                        <span class="flex items-center gap-1"><i class="fas fa-heart text-red-500"></i> Save favorites</span>
+                        <span class="flex items-center gap-1"><i class="fas fa-share-alt text-coc-cyan"></i> Share</span>
+                    </div>
+                    <p class="mt-3 text-[10px] text-gray-600">👆 Tap any town hall to view bases</p>
+                </div>
+            `;
+
+            document.querySelectorAll('.filter-chip').forEach(el => {
+                el.classList.toggle('active', el.dataset.filter === currentFilter);
+            });
+            
+            updateFavCount();
+        }
+
+        // ========================================
+        // SEARCH & FILTER
+        // ========================================
+        function handleSearch(query) {
+            searchQuery = query.toLowerCase().trim();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            
+            const currentTH = document.querySelector('[data-townhall]')?.dataset?.townhall;
+            if (currentTH) {
+                navigateToTownHall(parseInt(currentTH));
+            } else {
+                const filteredBases = bases.filter(base => 
+                    base.title.toLowerCase().includes(searchQuery) ||
+                    base.th.toString().includes(searchQuery)
+                );
+                renderFilteredResults(filteredBases);
+            }
+        }
+
+        function renderFilteredResults(filteredBases) {
+            const existingResults = document.querySelector('.search-results');
+            if (existingResults) existingResults.remove();
+            
+            if (filteredBases.length === 0) {
+                app.insertAdjacentHTML('beforeend', `
+                    <div class="search-results text-center py-12 md:py-20 animate-fade-in">
+                        <div class="text-4xl md:text-6xl mb-4">🔍</div>
+                        <h3 class="text-xl md:text-2xl text-white font-bold mb-2">No bases found</h3>
+                        <p class="text-gray-400 text-sm md:text-base">Try adjusting your search or filters</p>
+                        <button onclick="clearSearch(); filterBases('all');" class="mt-4 text-coc-gold hover:underline text-sm md:text-base touch-btn">
+                            Clear filters
+                        </button>
+                    </div>
+                `);
+                return;
+            }
+            
+            app.insertAdjacentHTML('beforeend', `
+                <div class="search-results mt-6 md:mt-8">
+                    <h3 class="text-lg md:text-2xl font-bold text-white mb-3 md:mb-4 flex items-center gap-2">
+                        <i class="fas fa-search text-coc-gold"></i>
+                        Search Results (${filteredBases.length})
+                    </h3>
+                    <div class="base-grid">
+                        ${filteredBases.map(base => `
+                            <div onclick="window.location.href='?id=${base.id}'" 
+                                 class="glass glass-hover rounded-xl md:rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 active:scale-95 group card-shine">
+                                <div class="relative overflow-hidden h-40 md:h-56">
+                                    <img src="base/${base.picture}" 
+                                         alt="${base.title}"
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                         loading="lazy"
+                                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect fill=%22%23333%22 width=%22400%22 height=%22300%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2220%22>${base.title}</text></svg>'">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-coc-dark via-transparent to-transparent"></div>
+                                    <div class="absolute top-2 left-2 flex gap-1 md:gap-2">
+                                        <span class="bg-coc-gold/90 text-coc-dark px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[8px] md:text-xs font-bold">
+                                            TH${base.th}
+                                        </span>
+                                    </div>
+                                    <button onclick="event.stopPropagation(); toggleFavorite(${base.id})" 
+                                            class="absolute top-2 right-2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center favorite-btn ${isFavorite(base.id) ? 'active' : ''}">
+                                        <i class="fas fa-star text-sm md:text-base"></i>
+                                    </button>
+                                </div>
+                                <div class="p-3 md:p-5">
+                                    <h3 class="text-sm md:text-lg font-bold text-white group-hover:text-coc-gold transition-colors line-clamp-1">
+                                        ${base.title}
+                                    </h3>
+                                    <div class="flex items-center justify-between mt-1 md:mt-2">
+                                        <span class="text-[10px] md:text-sm text-gray-400">
+                                            <i class="fas fa-chess-queen mr-1"></i> TH${base.th}
+                                        </span>
+                                        <span class="text-coc-gold text-xs md:text-sm group-hover:translate-x-1 transition-transform">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `);
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('searchInput');
+            if (input) {
+                input.value = '';
+                searchQuery = '';
+                const clearBtn = document.getElementById('clearSearchBtn');
+                if (clearBtn) clearBtn.classList.add('hidden');
+            }
+            const results = document.querySelector('.search-results');
+            if (results) results.remove();
+            renderHomePage();
+        }
+
+        function filterBases(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-chip').forEach(el => {
+                el.classList.toggle('active', el.dataset.filter === filter);
+            });
+            
+            const currentTH = document.querySelector('[data-townhall]')?.dataset?.townhall;
+            if (currentTH) {
+                navigateToTownHall(parseInt(currentTH));
+            } else {
+                renderHomePage();
+            }
+        }
+
+        function showFavorites() {
+            currentFilter = 'favorites';
+            document.querySelectorAll('.filter-chip').forEach(el => {
+                el.classList.toggle('active', el.dataset.filter === 'favorites');
+            });
+            
+            const currentTH = document.querySelector('[data-townhall]')?.dataset?.townhall;
+            if (currentTH) {
+                navigateToTownHall(parseInt(currentTH));
+            } else {
+                const favoriteBases = bases.filter(b => favorites.includes(b.id));
+                if (favoriteBases.length === 0) {
+                    showToast('No favorites yet. Start saving bases! ⭐', 'info');
+                    renderHomePage();
+                } else {
+                    renderFilteredResults(favoriteBases);
+                }
+            }
+        }
+
+        function showStats() {
+            const stats = getStats();
+            const favoriteBases = bases.filter(b => favorites.includes(b.id));
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay animate-fade-in';
+            modal.innerHTML = `
+                <div class="glass rounded-3xl max-w-md w-full max-h-[80vh] overflow-y-auto p-6 relative">
+                    <button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 text-gray-400 hover:text-white touch-btn w-10 h-10 flex items-center justify-center">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                    <h2 class="text-2xl font-bold text-white mb-4">📊 Statistics</h2>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-white/5 rounded-xl p-4 flex items-center justify-between">
+                            <span class="text-gray-300">Total Bases</span>
+                            <span class="text-2xl font-bold text-coc-gold">${stats.totalBases}</span>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-4 flex items-center justify-between">
+                            <span class="text-gray-300">Town Hall Levels</span>
+                            <span class="text-2xl font-bold text-coc-purple">${stats.uniqueTH}</span>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-4 flex items-center justify-between">
+                            <span class="text-gray-300">Most Popular TH</span>
+                            <span class="text-2xl font-bold text-coc-cyan">${stats.mostPopularTH ? stats.mostPopularTH[0] : 'N/A'}</span>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-4 flex items-center justify-between">
+                            <span class="text-gray-300">Your Favorites</span>
+                            <span class="text-2xl font-bold text-coc-gold">${stats.favoritesCount}</span>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-4">
+                            <span class="text-gray-300 block mb-2">Favorite Bases</span>
+                            <div class="flex flex-wrap gap-1">
+                                ${favoriteBases.length > 0 ? favoriteBases.map(b => 
+                                    `<span class="bg-coc-gold/20 text-coc-gold text-xs px-2 py-1 rounded-full">${b.title}</span>`
+                                ).join('') : '<span class="text-gray-400 text-sm">No favorites yet</span>'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="this.closest('.fixed').remove()" class="w-full mt-4 bg-coc-gold text-coc-dark font-bold py-3 rounded-xl touch-btn">
+                        Close
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+        }
+
+        function scrollToSearch() {
+            const searchSection = document.getElementById('searchSection');
+            if (searchSection) {
+                searchSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const input = document.getElementById('searchInput');
+                if (input) {
+                    setTimeout(() => {
+                        input.focus();
+                        input.select();
+                    }, 500);
+                }
+            }
+        }
+
+        // ========================================
+        // NAVIGATE TO TOWN HALL
+        // ========================================
+        function navigateToTownHall(th) {
+            let townHallBases = bases.filter(base => base.th === th);
+            
+            if (searchQuery) {
+                townHallBases = townHallBases.filter(base => 
+                    base.title.toLowerCase().includes(searchQuery) ||
+                    base.th.toString().includes(searchQuery)
+                );
+            }
+            
+            if (currentFilter === 'favorites') {
+                townHallBases = townHallBases.filter(base => favorites.includes(base.id));
+            } else if (currentFilter !== 'all') {
+                townHallBases = townHallBases.filter(base => 
+                    base.title.toLowerCase().includes(currentFilter)
+                );
+            }
+            
+            const results = document.querySelector('.search-results');
+            if (results) results.remove();
+            
+            app.innerHTML = `
+                <div class="mb-4 md:mb-8 animate-slide-up">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="renderHomePage()" 
+                                class="text-gray-300 hover:text-white transition-colors flex items-center gap-2 text-sm md:text-base touch-btn py-2 px-3 rounded-xl active:scale-95">
+                            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                            <span class="hidden sm:inline">Back</span>
+                        </button>
+                        <div class="flex items-center gap-2 md:gap-4">
+                            <span class="text-gray-400 text-xs md:text-sm">
+                                <i class="fas fa-chess-queen mr-1"></i>
+                                ${townHallBases.length} bases
+                            </span>
+                            <button onclick="toggleGridView()" class="text-gray-400 hover:text-white transition-colors touch-btn w-8 h-8 flex items-center justify-center rounded-lg active:scale-95">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4 md:mt-6" data-townhall="${th}">
+                        <div class="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-coc-gold/20 to-transparent px-4 md:px-8 py-2 md:py-3 rounded-xl md:rounded-2xl">
+                            <span class="text-2xl md:text-4xl">🏰</span>
+                            <h2 class="text-2xl md:text-5xl font-bold text-white">Town Hall ${th}</h2>
+                        </div>
+                        <p class="text-gray-400 text-xs md:text-sm mt-2 md:mt-3">${townHallBases.length} base layouts available</p>
+                        <div class="w-16 md:w-20 h-1 bg-gradient-to-r from-coc-gold to-coc-purple mx-auto mt-2 md:mt-4 rounded-full"></div>
+                    </div>
+                </div>
+
+                ${townHallBases.length === 0 ? `
+                    <div class="text-center py-12 md:py-20">
+                        <div class="text-4xl md:text-6xl mb-4">🔍</div>
+                        <h3 class="text-xl md:text-2xl text-white font-bold mb-2">No bases found</h3>
+                        <p class="text-gray-400 text-sm md:text-base">Try adjusting your search or filters</p>
+                        <button onclick="clearSearch(); filterBases('all');" class="mt-4 text-coc-gold hover:underline text-sm md:text-base touch-btn">
+                            Clear filters
+                        </button>
+                    </div>
+                ` : `
+                    <div class="base-grid" id="baseGrid">
+                        ${townHallBases.map(base => `
+                            <div onclick="window.location.href='?id=${base.id}'" 
+                                 class="glass glass-hover rounded-xl md:rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 active:scale-95 group card-shine">
+                                <div class="relative overflow-hidden h-40 md:h-56">
+                                    <img src="base/${base.picture}" 
+                                         alt="${base.title}"
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                         loading="lazy"
+                                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect fill=%22%23333%22 width=%22400%22 height=%22300%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2220%22>${base.title}</text></svg>'">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-coc-dark via-transparent to-transparent"></div>
+                                    <div class="absolute top-2 left-2 flex flex-wrap gap-1 md:gap-2">
+                                        <span class="bg-coc-gold/90 text-coc-dark px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[8px] md:text-xs font-bold">
+                                            TH${base.th}
+                                        </span>
+                                        ${isFavorite(base.id) ? '<span class="bg-yellow-500/90 text-white px-2 py-0.5 rounded-full text-[8px] md:text-xs font-bold"><i class="fas fa-star"></i></span>' : ''}
+                                    </div>
+                                    <button onclick="event.stopPropagation(); toggleFavorite(${base.id})" 
+                                            class="absolute top-2 right-2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center favorite-btn ${isFavorite(base.id) ? 'active' : ''}">
+                                        <i class="fas fa-star text-sm md:text-base"></i>
+                                    </button>
+                                    <div class="absolute bottom-2 left-2 right-2">
+                                        <span class="inline-block bg-black/50 backdrop-blur-sm px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[8px] md:text-xs text-white">
+                                            <i class="fas fa-eye mr-1"></i> Tap to view
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="p-3 md:p-5">
+                                    <h3 class="text-sm md:text-lg font-bold text-white mb-0.5 md:mb-1 group-hover:text-coc-gold transition-colors line-clamp-1">
+                                        ${base.title}
+                                    </h3>
+                                    <div class="flex items-center justify-between text-xs md:text-sm">
+                                        <span class="text-gray-400">
+                                            <i class="fas fa-chess-queen mr-1"></i> TH${base.th}
+                                        </span>
+                                        <span class="text-coc-gold group-hover:translate-x-1 transition-transform">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `}
+            `;
+            
+            document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector('[data-nav="home"]')?.classList.add('active');
+            updateFavCount();
+        }
+
+        // ========================================
+        // RENDER BASE DETAILS
+        // ========================================
+        function renderBaseDetails(id) {
+            const base = bases.find(b => b.id === id);
+            
+            if (!base) {
+                app.innerHTML = `
+                    <div class="text-center text-white py-12 md:py-20">
+                        <div class="text-4xl md:text-6xl mb-4">😕</div>
+                        <h2 class="text-2xl md:text-3xl font-bold mb-4">Base Not Found</h2>
+                        <a href="#" onclick="renderHomePage(); return false;" class="text-coc-gold hover:underline inline-flex items-center gap-2 text-sm md:text-base touch-btn">
+                            <i class="fas fa-home"></i> Return to Home
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            const currentIndex = bases.findIndex(b => b.id === id);
+            const prevBase = currentIndex > 0 ? bases[currentIndex - 1] : null;
+            const nextBase = currentIndex < bases.length - 1 ? bases[currentIndex + 1] : null;
+            const isFav = isFavorite(base.id);
+
+            app.innerHTML = `
+                <div class="max-w-5xl mx-auto animate-slide-up">
+                    <div class="flex items-center justify-between mb-4 md:mb-6 flex-wrap gap-2 md:gap-4">
+                        <a href="#" onclick="renderHomePage(); return false;" 
+                           class="text-gray-300 hover:text-white transition-colors flex items-center gap-2 text-sm md:text-base touch-btn py-2 px-3 rounded-xl active:scale-95">
+                            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                            <span class="hidden sm:inline">Home</span>
+                        </a>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="toggleFavorite(${base.id})" 
+                                    class="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 rounded-xl ${isFav ? 'bg-coc-gold/20 text-coc-gold border border-coc-gold/30' : 'bg-white/10 text-gray-300 active:bg-white/20'} transition-all touch-btn text-sm md:text-base">
+                                <i class="fas ${isFav ? 'fa-star' : 'fa-star'}"></i>
+                                <span class="hidden xs:inline">${isFav ? 'Favorited' : 'Favorite'}</span>
+                            </button>
+                            ${prevBase ? `
+                                <a href="?id=${prevBase.id}" 
+                                   class="bg-white/10 hover:bg-white/20 text-white px-3 md:px-4 py-2 rounded-xl transition-colors flex items-center gap-1 md:gap-2 touch-btn text-sm md:text-base">
+                                    <i class="fas fa-chevron-left"></i>
+                                    <span class="hidden sm:inline">Prev</span>
+                                </a>
+                            ` : ''}
+                            ${nextBase ? `
+                                <a href="?id=${nextBase.id}" 
+                                   class="bg-white/10 hover:bg-white/20 text-white px-3 md:px-4 py-2 rounded-xl transition-colors flex items-center gap-1 md:gap-2 touch-btn text-sm md:text-base">
+                                    <span class="hidden sm:inline">Next</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-2xl md:rounded-3xl overflow-hidden border border-white/10">
+                        <div class="relative bg-gradient-to-b from-coc-darker/50 to-coc-dark/50 p-3 md:p-8">
+                            <div class="relative">
+                                <img src="base/${base.picture}" 
+                                     alt="${base.title}"
+                                     class="w-full max-h-[300px] md:max-h-[500px] object-contain mx-auto rounded-xl md:rounded-2xl shadow-2xl"
+                                     loading="lazy"
+                                     onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22600%22><rect fill=%22%23333%22 width=%22800%22 height=%22600%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2230%22>${base.title}</text></svg>'">
+                                
+                                <div class="absolute top-2 md:top-4 left-2 md:left-4 flex flex-wrap gap-1 md:gap-2">
+                                    <span class="bg-coc-gold text-coc-dark px-2 md:px-4 py-1 md:py-2 rounded-full text-[10px] md:text-sm font-bold shadow-2xl">
+                                        <i class="fas fa-chess-queen mr-1"></i> TH${base.th}
+                                    </span>
+                                    ${isFav ? '<span class="bg-yellow-500 text-white px-2 md:px-4 py-1 md:py-2 rounded-full text-[10px] md:text-sm font-bold shadow-2xl"><i class="fas fa-star mr-1"></i> Favorite</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 md:p-8">
+                            <div class="flex flex-col md:flex-row md:items-start justify-between gap-2 md:gap-4">
+                                <div>
+                                    <h1 class="text-xl md:text-4xl font-bold text-white mb-1 md:mb-2">
+                                        ${base.title}
+                                    </h1>
+                                    <p class="text-gray-400 flex items-center gap-2 text-sm md:text-base">
+                                        <i class="fas fa-chess-queen"></i>
+                                        Town Hall ${base.th}
+                                    </p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <span class="bg-white/5 px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs text-gray-400">
+                                        <i class="far fa-clock mr-1"></i> #${base.id}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 md:mt-6 flex flex-wrap gap-1 md:gap-2">
+                                <span class="bg-white/5 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm text-gray-300">
+                                    <i class="fas fa-shield-alt mr-1 text-coc-gold"></i> Base Layout
+                                </span>
+                                <span class="bg-white/5 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm text-gray-300">
+                                    <i class="fas fa-users mr-1 text-coc-cyan"></i> War Ready
+                                </span>
+                                <span class="bg-white/5 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm text-gray-300">
+                                    <i class="fas fa-trophy mr-1 text-coc-purple"></i> Competitive
+                                </span>
+                            </div>
+                            
+                            <button onclick="copyBaseLayout('${base.link}')" 
+                                    class="w-full mt-4 md:mt-8 bg-gradient-to-r from-coc-gold via-yellow-500 to-coc-gold 
+                                           text-coc-dark font-bold text-sm md:text-xl py-4 md:py-5 px-6 md:px-8 rounded-xl md:rounded-2xl 
+                                           active:scale-95 transition-all duration-300 shadow-2xl 
+                                           flex items-center justify-center gap-2 md:gap-3 group touch-btn">
+                                <i class="fas fa-copy text-lg md:text-2xl group-hover:rotate-12 transition-transform"></i>
+                                <span>Copy Base Layout</span>
+                                <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                            
+                            <div class="mt-3 md:mt-4 flex items-center justify-center gap-4 text-xs md:text-sm text-gray-500">
+                                <span class="hidden xs:inline">Share:</span>
+                                <button onclick="shareBase('${base.title}', ${base.id})" class="hover:text-coc-gold transition-colors touch-btn w-8 h-8 flex items-center justify-center rounded-full active:bg-white/10">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <button onclick="copyLink(${base.id})" class="hover:text-coc-gold transition-colors touch-btn w-8 h-8 flex items-center justify-center rounded-full active:bg-white/10">
+                                    <i class="fas fa-link"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 md:mt-8 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                        ${prevBase ? `
+                            <a href="?id=${prevBase.id}" 
+                               class="glass glass-hover rounded-xl md:rounded-2xl p-3 md:p-5 transition-all duration-300 active:scale-95 group">
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <img src="base/${prevBase.picture}" 
+                                         alt="${prevBase.title}"
+                                         class="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg md:rounded-xl"
+                                         loading="lazy"
+                                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2264%22><rect fill=%22%23444%22 width=%2264%22 height=%2264%22/></svg>'">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-gray-400 text-[10px] md:text-sm flex items-center gap-1">
+                                            <i class="fas fa-chevron-left text-xs"></i> Previous
+                                        </p>
+                                        <p class="text-white font-bold group-hover:text-coc-gold transition-colors truncate text-sm md:text-base">
+                                            ${prevBase.title}
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        ` : '<div></div>'}
+                        
+                        ${nextBase ? `
+                            <a href="?id=${nextBase.id}" 
+                               class="glass glass-hover rounded-xl md:rounded-2xl p-3 md:p-5 transition-all duration-300 active:scale-95 group">
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <div class="flex-1 min-w-0 text-right">
+                                        <p class="text-gray-400 text-[10px] md:text-sm flex items-center justify-end gap-1">
+                                            Next <i class="fas fa-chevron-right text-xs"></i>
+                                        </p>
+                                        <p class="text-white font-bold group-hover:text-coc-gold transition-colors truncate text-sm md:text-base">
+                                            ${nextBase.title}
+                                        </p>
+                                    </div>
+                                    <img src="base/${nextBase.picture}" 
+                                         alt="${nextBase.title}"
+                                         class="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg md:rounded-xl"
+                                         loading="lazy"
+                                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2264%22><rect fill=%22%23444%22 width=%2264%22 height=%2264%22/></svg>'">
+                                </div>
+                            </a>
+                        ` : '<div></div>'}
+                    </div>
+                </div>
+            `;
+            
+            document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector('[data-nav="home"]')?.classList.add('active');
+            updateFavCount();
+        }
+
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        function getBaseCountForTownHall(th) {
+            return bases.filter(base => base.th === th).length;
+        }
+
+        function copyBaseLayout(link) {
+            window.open(link, "_blank");
+            showToast('This base is empty link...', 'info');
+        }
+
+        function shareBase(title, id) {
+            const url = window.location.href.split('?')[0] + `?id=${id}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: `Clash of Clans Base: ${title}`,
+                    text: `Check out this ${title} base layout!`,
+                    url: url
+                }).catch(() => {});
+            } else {
+                copyLink(id);
+            }
+        }
+
+        function copyLink(id) {
+            const url = window.location.href.split('?')[0] + `?id=${id}`;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Link copied! 📋', 'success');
+            }).catch(() => {
+                showToast('Copy the URL manually', 'warning');
+            });
+        }
+
+        function toggleGridView() {
+            const grid = document.getElementById('baseGrid');
+            if (grid) {
+                grid.classList.toggle('grid-cols-1');
+                grid.classList.toggle('sm:grid-cols-2');
+                grid.classList.toggle('md:grid-cols-2');
+            }
+        }
+
+        // ========================================
+        // KEYBOARD SHORTCUTS
+        // ========================================
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.focus();
+                    searchInput.select();
+                }
+            }
+            if (e.key === 'Escape') {
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput && searchInput.value) {
+                    clearSearch();
+                } else if (window.location.search.includes('id=')) {
+                    renderHomePage();
+                    window.history.pushState({}, '', '/');
+                }
+            }
+        });
+
+        console.log('🏰 Clash of Clans Base Layouts Pro loaded!');
+        console.log(`📊 ${bases.length} base layouts available`);
+        console.log(`⭐ ${favorites.length} favorites saved`);
+        console.log('📱 Mobile-optimized version');
+    </script>
+</body>
+</html>
