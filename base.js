@@ -202,18 +202,24 @@ const bases = [
     {
         th: 11,
         picture: "townhall11-base2.png",
+        title: "TH11 War Base",
+        link: "https://link.clashofclans.com/en?action=OpenLayout&id=TH11%3AWB%3AAAAAFwAAAAKiEGwjfT31VYaKlkL8gyxc"
+    },
+    {
+        th: 11,
+        picture: "townhall11-base3.png",
         title: "TH11 Hybrid Base",
         link: ""
     },
     {
         th: 11,
-        picture: "townhall11-base3.png",
+        picture: "townhall11-base4.png",
         title: "TH11 Farming Base",
         link: ""
     },
     {
         th: 11,
-        picture: "townhall11-base4.png",
+        picture: "townhall11-base5.png",
         title: "TH11 Trophy Base",
         link: ""
     },
