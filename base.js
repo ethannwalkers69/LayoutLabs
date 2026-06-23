@@ -197,7 +197,7 @@ const bases = [
         th: 11,
         picture: "townhall11-base1.png",
         title: "TH11 War Base",
-        link: ""
+        link: "https://link.clashofclans.com/en?action=OpenLayout&id=TH11%3AWB%3AAAAAFwAAAAJm8BR9uAIObe72iDoscHfY"
     },
     {
         th: 11,
